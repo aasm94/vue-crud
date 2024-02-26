@@ -29,11 +29,6 @@ export default {
     const userId = ref(null);
     const router = useRouter();
 
-    // Verifica si el parámetro 'id' está presente en la ruta
-    // if ('id' in router.currentRoute.params) {
-    //   userId.value = router.currentRoute.params.id;
-    // }
-
     const user = ref({
       name: '',
       email: '',

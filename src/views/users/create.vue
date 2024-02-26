@@ -52,7 +52,3 @@ const submitForm = async () => {
   }
 };
 </script>
-
-<style scoped>
-/* Your scoped styles go here */
-</style>

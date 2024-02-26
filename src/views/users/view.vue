@@ -2,6 +2,11 @@
   <main>
     <v-app>
       <v-container>
+        <v-row justify="end">
+            <router-link to="/create">
+            <v-btn color="primary">Create</v-btn>
+            </router-link>
+        </v-row>
         <v-data-table
           :headers="headers"
           :items="users"
@@ -80,13 +85,12 @@ export default {
       try {
         const response = await fetch('http://localhost/ThiioTest/public/api/v1/users');
         const data = await response.json();
-        this.users = data; // Asumiendo que la respuesta es un array de usuarios
+        this.users = data; 
       } catch (error) {
         console.error('Error al obtener usuarios:', error);
       }
     },
     editUser(user) {
-      // Implementa la lógica de edición aquí
       this.$router.push({ name: 'edit', params: { id: user.id } });
     },
     async deleteUser(user) {
@@ -97,7 +101,6 @@ export default {
 
         const responseData = await response.json();
 
-        // Mostrar el mensaje en el dialog en lugar del snackbar
         this.snackbarMessage = responseData.message;
         this.dialog = true;
 
@@ -108,13 +111,9 @@ export default {
       }
     },
     viewDetails(user) {
-      // Implementa la lógica para ver los detalles del usuario aquí
-      console.log('Ver detalles del usuario:', user);
+      this.$router.push({ name: 'details', params: { id: user.id } });
     },
   },
 };
 </script>
 
-<style scoped>
-/* Puedes personalizar estilos aquí si es necesario */
-</style>
