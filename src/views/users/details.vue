@@ -45,6 +45,8 @@
 <script>
 import axios from 'axios';
 
+const token = localStorage.getItem('access_token');
+
 export default {
   data() {
     return {
@@ -57,7 +59,11 @@ export default {
     },
     async fetchUserDetails(userId) {
       try {
-        const response = await axios.get(`http://localhost/ThiioTest/public/api/v1/users/${userId}`);
+        const response = await axios.get(`http://localhost/ThiioTest/public/api/v1/users/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         this.user = response.data.user;
       } catch (error) {
         console.error('Error fetching user details:', error);

@@ -28,6 +28,7 @@ export default {
   setup() {
     const userId = ref(null);
     const router = useRouter();
+    const token = localStorage.getItem('access_token');
 
     const user = ref({
       name: '',
@@ -42,7 +43,11 @@ export default {
 
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost/ThiioTest/public/api/v1/users/${userId.value}`);
+        const response = await axios.get(`http://localhost/ThiioTest/public/api/v1/users/${userId.value}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         user.value = response.data.user;
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -51,7 +56,12 @@ export default {
 
     const submitForm = async () => {
       try {
-        const response = await axios.put(`http://localhost/ThiioTest/public/api/v1/users/${userId.value}`, user.value);
+        const response = await axios.put(`http://localhost/ThiioTest/public/api/v1/users/${userId.value}`, user.value, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
         snackbarMessage.value = response.data.message;
         snackbar.value = true;
 

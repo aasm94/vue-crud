@@ -60,6 +60,7 @@ import { ref } from 'vue';
 const snackbar = ref(false);
 const snackbarMessage = ref('');
 const snackbarTimeout = 5000;
+const token = localStorage.getItem('access_token');
 
 export default {
   data() {
@@ -83,7 +84,14 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const response = await fetch('http://localhost/ThiioTest/public/api/v1/users');
+        const response = await fetch('http://localhost/ThiioTest/public/api/v1/users', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            // Add other headers if needed
+          },
+        });
         const data = await response.json();
         this.users = data; 
       } catch (error) {
@@ -97,6 +105,11 @@ export default {
       try {
         const response = await fetch(`http://localhost/ThiioTest/public/api/v1/users/${user.id}`, {
           method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            // Add other headers if needed
+          },
         });
 
         const responseData = await response.json();

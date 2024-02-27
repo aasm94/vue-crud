@@ -25,6 +25,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const token = localStorage.getItem('access_token');
 const formData = ref({
   name: '',
   email: '',
@@ -38,7 +39,12 @@ const snackbarTimeout = 5000;
 
 const submitForm = async () => {
   try {
-    const response = await axios.post('http://localhost/ThiioTest/public/api/v1/users', formData.value);
+    const response = await axios.post('http://localhost/ThiioTest/public/api/v1/users', formData.value, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     
     snackbarMessage.value = response.data.message;
     snackbar.value = true;

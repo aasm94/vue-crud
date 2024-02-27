@@ -5,7 +5,7 @@ import UsersView from '../views/users/view.vue';
 import CreateUserView from '../views/users/create.vue';
 import EditUserView from '../views/users/edit.vue';
 import UserDetailsView from '../views/users/details.vue';
-import login from '../views/auth/login.vue'; // Agrega la importación para la vista de login
+import login from '../views/auth/login.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,31 +41,29 @@ const router = createRouter({
       component: UserDetailsView
     },
     {
-      path: '/login', // Ruta para la vista de login
+      path: '/login',
       name: 'login',
       component: login
     }
   ]
 });
 
-// Middleware para verificar si el usuario está autenticado
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = checkIfUserIsAuthenticated(); // Replace this with your authentication logic
+  const isAuthenticated = checkIfUserIsAuthenticated(); 
   console.log(isAuthenticated);
-  if (to.name !== 'login' && !isAuthenticated) {
-    // Redirigir a la vista de login si no está autenticado y la ruta no es la de login
-    next({ name: 'login' });
+  if ((to.name === 'login' || to.name === 'create') || isAuthenticated) {
+    // Allow access to 'login' and 'register' routes or if the user is authenticated
+    next();
   } else {
-    next(); // Continuar con la navegación normal
+    // Redirect to the login page if not authenticated and trying to access other routes
+    next({ name: 'login' });
   }
 });
 
 // Function to check if the user is authenticated
 function checkIfUserIsAuthenticated() {
-  // Add your authentication logic here, for example, check if the user has a valid access token
-  // You can use Vuex, localStorage, or any other method to store and check the authentication status
-  const accessToken = localStorage.getItem('access_token');
-  return !!accessToken; // Returns true if there is an access token, indicating the user is authenticated
+    const accessToken = localStorage.getItem('access_token');
+    return !!accessToken; // Returns true if there is an access token, indicating the user is authenticated
 }
 
 export default router;
